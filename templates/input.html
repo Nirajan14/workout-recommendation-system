@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Get My Plan — IronForm{% endblock %}
+{% block content %}
+
+<section class="form-section">
+  <h1>Tell us about you</h1>
+  <p class="form-sub">Used only for this session — nothing is stored.</p>
+
+  {% if errors %}
+  <div class="error-box">
+    <strong>Please fix the following:</strong>
+    <ul>
+      {% for e in errors %}<li>{{ e }}</li>{% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <form action="{{ url_for('predict') }}" method="POST" class="workout-form">
+
+    <div class="field-grid">
+      <div class="field">
+        <label for="age">Age</label>
+        <input type="number" id="age" name="age" min="10" max="90" placeholder="e.g. 24"
+               value="{{ form.age if form else '' }}" required>
+      </div>
+
+      <div class="field">
+        <label for="gender">Gender</label>
+        <select id="gender" name="gender" required>
+          <option value="" disabled {% if not form %}selected{% endif %}>Select</option>
+          <option value="Male" {% if form and form.gender=='Male' %}selected{% endif %}>Male</option>
+          <option value="Female" {% if form and form.gender=='Female' %}selected{% endif %}>Female</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="height_cm">Height (cm)</label>
+        <input type="number" step="0.1" id="height_cm" name="height_cm" min="100" max="230" placeholder="e.g. 170"
+               value="{{ form.height_cm if form else '' }}" required>
+      </div>
+
+      <div class="field">
+        <label for="weight_kg">Weight (kg)</label>
+        <input type="number" step="0.1" id="weight_kg" name="weight_kg" min="30" max="250" placeholder="e.g. 68"
+               value="{{ form.weight_kg if form else '' }}" required>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Fitness Goal</label>
+      <div class="pill-group">
+        {% for g in goals %}
+        <label class="pill">
+          <input type="radio" name="fitness_goal" value="{{ g }}"
+                 {% if form and form.fitness_goal==g %}checked{% endif %}
+                 {% if not form and loop.first %}checked{% endif %} required>
+          <span>{{ g }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Experience Level</label>
+      <div class="pill-group">
+        {% for ex in experience %}
+        <label class="pill">
+          <input type="radio" name="experience_level" value="{{ ex }}"
+                 {% if form and form.experience_level==ex %}checked{% endif %}
+                 {% if not form and loop.first %}checked{% endif %} required>
+          <span>{{ ex }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Equipment Access</label>
+      <div class="pill-group">
+        {% for eq in equipment %}
+        <label class="pill">
+          <input type="radio" name="equipment_access" value="{{ eq }}"
+                 {% if form and form.equipment_access==eq %}checked{% endif %}
+                 {% if not form and loop.first %}checked{% endif %} required>
+          <span>{{ eq }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="field-grid">
+      <div class="field">
+        <label for="days_per_week">Training Days / Week</label>
+        <select id="days_per_week" name="days_per_week" required>
+          {% for d in days_options %}
+          <option value="{{ d }}" {% if form and form.days_per_week==d|string %}selected{% elif not form and d==4 %}selected{% endif %}>{{ d }} days/week</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="session_minutes">Planned Session Length</label>
+        <select id="session_minutes" name="session_minutes" required>
+          {% for m in duration_options %}
+          <option value="{{ m }}" {% if form and form.session_minutes==m|string %}selected{% elif not form and m==60 %}selected{% endif %}>{{ m }} minutes</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <p class="form-hint">Used to estimate calories burned per session from real gym-member data — not required for the plan itself.</p>
+
+    <button type="submit" class="btn-primary btn-block">Generate My Workout Plan &rarr;</button>
+  </form>
+</section>
+
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Your Plan — IronForm{% endblock %}
+{% block content %}
+<section class="result-section">
+  <p class="eyebrow">Your Recommendation</p>
+  <h1>{{ r.plan.title }}</h1>
+  <p class="confidence">Built from real workout-program data</p>
+
+  <div class="profile-strip">
+    <div><span class="k">Age</span><span class="v">{{ r.age }}</span></div>
+    <div><span class="k">Gender</span><span class="v">{{ r.gender }}</span></div>
+    <div><span class="k">Height</span><span class="v">{{ r.height_cm }} cm</span></div>
+    <div><span class="k">Weight</span><span class="v">{{ r.weight_kg }} kg</span></div>
+    <div><span class="k">BMI</span><span class="v">{{ r.bmi }} ({{ r.bmi_category }})</span></div>
+    <div><span class="k">Equipment</span><span class="v">{{ r.plan.equipment }}</span></div>
+  </div>
+
+  <div class="calorie-card">
+    <div class="calorie-num">~{{ r.predicted_calories }} <span>kcal</span></div>
+    <div class="calorie-meta">
+      <p>Estimated burn for a {{ r.plan.duration }}-minute session, {{ r.plan.days }}x/week, at an estimated {{ r.avg_bpm }} bpm training zone.</p>
+    </div>
+  </div>
+
+  <h2 class="exercise-heading">Workout Plan</h2>
+  <p class="catalog-sub">Exercises, sets, reps, time, schedule, and weekly volume below are taken from real program descriptions.</p>
+
+  {% if r.plan.schedule %}
+  <div class="dataset-detail-section">
+    <h4>Weekly / Day Schedule</h4>
+    <div class="dataset-schedule">
+      {% for item in r.plan.schedule %}
+      <div class="schedule-row">{{ item }}</div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if r.plan.exercises %}
+  <div class="dataset-detail-section">
+    <h4>Exercises</h4>
+    <table class="exercise-table">
+      <thead>
+        <tr><th>#</th><th>Exercise / Movement</th><th>Sets × Target</th></tr>
+      </thead>
+      <tbody>
+        {% for ex in r.plan.exercises %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td><strong>{{ ex.exercise }}</strong></td>
+          <td class="mono">{{ ex.display }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  {% if r.plan.volume %}
+  <div class="dataset-detail-section">
+    <h4>Sets Per Week</h4>
+    <table class="exercise-table">
+      <thead><tr><th>Muscle Group</th><th>Sets / Week</th></tr></thead>
+      <tbody>
+        {% for item in r.plan.volume %}
+        <tr><td>{{ item.muscle_group }}</td><td class="mono">{{ item.sets_per_week }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  {% if not r.plan.schedule and not r.plan.exercises and not r.plan.volume %}
+  <div class="dataset-empty">The matched real dataset descriptions do not contain structured exercise details for this combination.</div>
+  {% endif %}
+
+  <div class="result-actions">
+    <a class="btn-secondary" href="{{ url_for('input_page') }}">Try Different Inputs</a>
+    <a class="btn-primary" href="{{ url_for('home') }}">Back to Home</a>
+  </div>
+</section>
+{% endblock %}

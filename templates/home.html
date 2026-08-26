@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}IronForm — Personalized Workout Plans{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <h1>Stop guessing.<br>Start a plan built<br>around <span class="accent">your</span> body.</h1>
+  <p class="hero-sub">
+    Tell IronForm your age, body metrics, goal, and equipment.
+  </p>
+  <a class="btn-primary" href="{{ url_for('input_page') }}">Get My Plan &rarr;</a>
+</section>
+
+{% endblock %}

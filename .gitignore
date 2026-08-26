@@ -1,0 +1,37 @@
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.egg-info/
+.Python
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Flask
+instance/
+*.log
+
+# Environment variables
+.env
+
+# Large raw dataset - exceeds GitHub's 100MB limit
+# Download from: https://drive.google.com/file/d/1wUfPL55LlocN8O5ivMMXf_9tLngk8Fi-/view?usp=drive_link
+data/programs_detailed.csv
+
+# Trained models - regenerate by running notebooks/train.ipynb
+model/*.pkl
