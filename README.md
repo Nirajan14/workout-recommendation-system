@@ -66,3 +66,4 @@ Open `notebooks/train.ipynb` and run all cells. It will:
 
 - The calorie model only uses: Age, Gender, Weight, Height, Session Duration, Workout Frequency, Experience Level, BMI.
 - The program recommender works purely on text similarity (TF-IDF) between the user's goal/level/equipment and each program's description — there's no manual rule table beyond keyword weighting in `app.py`.
+- --
